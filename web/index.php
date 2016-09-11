@@ -22,7 +22,7 @@ $aCooks = array(
 );
 
 $iCurrValue		=  exec("python waage.py read");
-$iDivMaxHeight	= 300;
+$iDivMaxHeight	= 371;
 $iTimeIsCooking	= 1;
 
 //a possible error to not determine the last bit as a missing bottle
@@ -147,87 +147,87 @@ function initSessionValues()	{
 
 ?> <html>
 	<head>
-	<style>
-		body {
-			text-align:center;
-		}
-		form {
-			display:inline-block;
-			margin:auto;
+		<style>
+			body {
+				text-align:center;
+			}
+			form {
+				display:inline-block;
+				margin:auto;
 
-		}
-		input {
+			}
+			input {
 
-			font-size: 0.7em;
-		}
-		div.bottleFrame {
-			
-			width: 500px;
-			margin:auto;
-			height: 500px;
-			border: 1px solid red;
-		}
-		div.floatingDiv {
-			
-			float:left;
-			width:48%;
-		}		
-		div.outerBottle {
+				font-size: 0.7em;
+			}
+			div.bottleFrame {
 
-			border: 1px solid black;
-			width:100px;
-			position:relative;
-			top:20px;
-			left:auto;
-			margin:auto;
-			height:<?php echo $iDivMaxHeight; ?>px;
-			font-size:5em;
-			overflow:auto;
-		}
-		div.bottle {
+				width: 350px;
+				margin:auto;
+				height: 550px;
+				border: 1px solid red;
+			}
+			div.floatingDiv {
 
-			height: <?php echo $iHeight; ?>px;
-			position: absolute;
-			top: <?php echo $iTopPos; ?>px;
-			background-color: black;
-			width:100%;
-		}
-		div.nextCookDiv {
-			
-			font-size:3.5em;
-			width:100%;
-		}
+				float:left;
+				width:48%;
+					}
+					div.bottlepic {
 
-	</style>
+						background-image: url(img/Kanne02.jpg);
+						background-size: 100%;
+					}
+			div.outerBottle {
+
+				border: 1px solid black;
+				width:76px;
+				position:relative;
+				top:15px;
+				left:113px;
+				height:<?php echo $iDivMaxHeight; ?>px;
+				font-size:5em;
+				overflow:auto;
+			}
+			div.bottle {
+
+				height: <?php echo $iHeight; ?>px;
+				position: absolute;
+				top: <?php echo $iTopPos; ?>px;
+				background-color: black;
+				width:100%;
+			}
+			div.nextCookDiv {
+
+				font-size:3.5em;
+				width:100%;
+				color:white;
+			}
+
+		</style>
 	</head>
 	<body>
-		<div class="bottleFrame">
-			<div class="floatingDiv">
-				<div class="outerBottle">
-				<?php if (bottleIsMissing($iCurrValue, $iEmptyBottle, $iFullBottle, $iErrorMargin)) { echo "<br>?"; } ?>
-					<div class="bottle"></div>
-				</div>
+		<div class="bottleFrame bottlepic">
+			
+			<div class="nextCookDiv">
+				<br>
+				<?php 
+				//if the bottle is reaching emptiness - when it's cooking, we do not need this hint
+				//BUT, if it is cooking - we could set another picture :D
+				if ($iCurrValue <= (($iFullBottle - $iEmptyBottle) / 3 + $iEmptyBottle)) { echo '- '.$_SESSION['nextCook'].' -'; } ?>
 			</div>
-		
-			<div class="floatingDiv">
-				<form action="" method="post">
-					<input type="submit" value="Flasche leer" />
-					<input type="hidden" name="order" value="empty" />
-				</form><br>
-				<form action="" method="post">
+			<div class="outerBottle">
+				
+				<?php if (bottleIsMissing($iCurrValue, $iEmptyBottle, $iFullBottle, $iErrorMargin)) { echo "<br>?"; } ?>
+				<div class="bottle"></div>
+			</div><br>
+			<form action="" method="post">
+				<input type="submit" value="Flasche leer" />
+				<input type="hidden" name="order" value="empty" />
+			</form>
+			<form action="" method="post">
 					<input type="submit" value="Flasche voll" />
 					<input type="hidden" name="order" value="full" />
 				</form>
-				<br>
-				Nächster Kocher:<br>
-				<div class="nextCookDiv">
-					
-					<?php 
-					//if the bottle is reaching emptiness - when it's cooking, we do not need this hint
-					//BUT, if it is cooking - we could set another picture :D
-					if ($iCurrValue <= (($iFullBottle - $iEmptyBottle) / 3 + $iEmptyBottle)) { echo $_SESSION['nextCook']; } ?>
-				</div>
-			</div>
 		</div>
 	</body>
 
